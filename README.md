@@ -1,4 +1,4 @@
-# uryify (originally [chrisify](github.com/zikes/chrisify))
+# uryify (originally [chrisify](https://github.com/zikes/chrisify))
 
 ## Linux Install
 
