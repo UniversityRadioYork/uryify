@@ -1,31 +1,22 @@
-# chrisify
+# uryify (originally [chrisify](github.com/zikes/chrisify))
 
 ## Linux Install
 
-1. Install the OpenCV Developer package. On Ubuntu systems that's `sudo apt install libopencv-dev`
-
-2. `go get github.com/zikes/chrisify`
-
-3. `go get github.com/lazywei/go-opencv`
-
-4. `cd $GOPATH/github.com/zikes/chrisify && go build && go install`
+```bash
+$ sudo apt install libopencv-dev
+$ go get github.com/UniversityRadioYork/uryify
+$ go get github.com/lazywei/go-opencv
+$ cd $GOPATH/src/github.com/UniversityRadioYork/uryify && go build
+```
 
 ## Usage
 
+Input/Output images have to be `.jpg` and the faces `.png` (with a transparent background obviously).
 
-Simplest: `./chrisify path/to/image.jpg > output.jpg`
+For best effect, use the [template](template.png) as it gives a nice margin around the face.
 
-If executed from any location besides the repository, you must tell it where to find the
-bundled Haar Cascade face recognition XML file. I tried to bundle it with the binary, but
-it must be provided as a file to the OpenCV library, so a file path is necessary.
+Simplest: `./uryify --faces /path/to/faces path/to/image.jpg > output.jpg`
 
-`chrisify --haar /path/to/haarcascade_frontalface_alt.xml /path/to/input.jpg > output.jpg`
+If executed from any location besides the repository, you must tell it where to find the bundled Haar Cascade face recognition XML file.
 
-If you'd like to include additional face options, you can provide a directory of PNG files
-to be imported:
-
-`chrisify --faces /path/to/faces /path/to/input.jpg > output.jpg`
-
-## Personalizing
-
-Chris is a great guy, but I can understand if you'd rather use some different faces. The most effective way to do this is to remove the `FaceList.loadInternal()` function (and reference) and delete `bindata.go`. Then make sure you run the executable with the `--faces` argument to load only the faces you want to use. Unless I'm forgetting anything, that's all there is to it!
+`uryify --faces /path/to/faces --haar /path/to/haarcascade_frontalface_alt.xml /path/to/input.jpg > output.jpg`

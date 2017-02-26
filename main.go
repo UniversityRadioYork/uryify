@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/zikes/chrisify/facefinder"
+	"github.com/UniversityRadioYork/uryify/facefinder"
 
 	"github.com/disintegration/imaging"
 )
@@ -20,7 +20,7 @@ var facesDir = flag.String("faces", "", "The directory to search for faces.")
 func main() {
 	flag.Parse()
 
-	var chrisFaces FaceList
+	var faces FaceList
 
 	var facesPath string
 	var err error
@@ -32,11 +32,11 @@ func main() {
 		}
 	}
 
-	err = chrisFaces.Load(facesPath)
+	err = faces.Load(facesPath)
 	if err != nil {
 		panic(err)
 	}
-	if len(chrisFaces) == 0 {
+	if len(faces) == 0 {
 		panic("no faces found")
 	}
 
@@ -46,16 +46,22 @@ func main() {
 
 	baseImage := loadImage(file)
 
-	faces := finder.Detect(baseImage)
+	facesFound := finder.Detect(baseImage)
 
 	bounds := baseImage.Bounds()
 
 	canvas := canvasFromImage(baseImage)
 
-	for _, face := range faces {
-		rect := rectMargin(30.0, face)
+	for _, faceFound := range facesFound {
 
-		newFace := chrisFaces.Random()
+		h := int(0.8 * float64(faceFound.Dy()))
+
+		faceFound.Min.Y += h
+		faceFound.Max.Y += h
+
+		rect := rectMargin(100.0, faceFound)
+
+		newFace := faces.Random()
 		if newFace == nil {
 			panic("nil face")
 		}
@@ -70,9 +76,9 @@ func main() {
 		)
 	}
 
-	if len(faces) == 0 {
+	if len(facesFound) == 0 {
 		face := imaging.Resize(
-			chrisFaces[0],
+			faces.Random(),
 			bounds.Dx()/3,
 			0,
 			imaging.Lanczos,
